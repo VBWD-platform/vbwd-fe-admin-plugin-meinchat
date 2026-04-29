@@ -1,0 +1,42 @@
+{
+  "meinchatAdmin": {
+    "prev": "Prev",
+    "next": "Next",
+    "pageOf": "Page {page} / {total}",
+    "nicknames": {
+      "title": "Nicknames",
+      "search": "Filter by nickname…",
+      "active": "Active",
+      "banned": "Banned",
+      "ban": "Ban",
+      "unban": "Unban",
+      "empty": "No nicknames yet.",
+      "col": {
+        "nickname": "Nickname",
+        "userId": "User ID",
+        "status": "Status",
+        "set": "Set at",
+        "actions": "Actions"
+      }
+    },
+    "conversation": {
+      "title": "Conversation inspector",
+      "idPlaceholder": "Paste a conversation ID (UUID)…",
+      "load": "Load",
+      "messages": "messages",
+      "lastAt": "Last message"
+    },
+    "transfers": {
+      "title": "Token transfers",
+      "totalCount": "{count} total",
+      "empty": "No transfers yet.",
+      "col": {
+        "executedAt": "Executed",
+        "from": "From",
+        "to": "To",
+        "amount": "Amount",
+        "note": "Note"
+      }
+    }
+  }
+}

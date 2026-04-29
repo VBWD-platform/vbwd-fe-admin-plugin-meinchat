@@ -1,0 +1,25 @@
+{
+  "tabs": [
+    {
+      "id": "general",
+      "label": "General",
+      "fields": [
+        {
+          "key": "default_per_page",
+          "label": "Rows per page",
+          "component": "input",
+          "inputType": "number",
+          "min": 10,
+          "max": 200,
+          "description": "Default page size on the moderation tables (nicknames, transfers)."
+        },
+        {
+          "key": "show_system_messages",
+          "label": "Highlight system messages",
+          "component": "checkbox",
+          "description": "Visually distinguish token-transfer system rows in the conversation inspector."
+        }
+      ]
+    }
+  ]
+}

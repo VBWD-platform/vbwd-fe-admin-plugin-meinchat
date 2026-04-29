@@ -1,0 +1,12 @@
+{
+  "default_per_page": {
+    "type": "integer",
+    "default": 50,
+    "description": "Default rows per page on the admin moderation tables"
+  },
+  "show_system_messages": {
+    "type": "boolean",
+    "default": true,
+    "description": "Highlight system_kind=token_transfer rows in the conversation inspector"
+  }
+}
