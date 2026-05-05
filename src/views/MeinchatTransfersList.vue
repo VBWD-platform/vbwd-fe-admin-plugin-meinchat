@@ -94,6 +94,19 @@ onMounted(fetch);
 </script>
 
 <style scoped>
-.cms-table__num { text-align: right; font-variant-numeric: tabular-nums; }
+.cms-list__header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 0.75rem; }
+.cms-list__header h1 { margin: 0; font-size: 1.25rem; color: var(--admin-heading, #2c3e50); }
+.cms-list__actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 .cms-list__total { color: var(--admin-text-muted, #666); font-size: 0.85rem; }
+.cms-list__pagination { display: flex; align-items: center; gap: 12px; justify-content: center; margin-top: 20px; }
+.cms-list__pagination button { padding: 8px 14px; border: 1px solid var(--admin-input-border, #ddd); border-radius: 4px; background: var(--admin-card-bg, #fff); color: var(--admin-text, #333); cursor: pointer; font-size: 14px; }
+.cms-list__pagination button:disabled { opacity: 0.4; cursor: default; }
+.cms-list__pagination button:not(:disabled):hover { background: var(--admin-th-bg, #f8f9fa); }
+
+.cms-table { width: 100%; border-collapse: collapse; }
+.cms-table th, .cms-table td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--admin-border-light, #eee); font-size: 14px; color: var(--admin-text, #333); }
+.cms-table th { background: var(--admin-th-bg, #f8f9fa); font-weight: 600; color: var(--admin-heading, #2c3e50); }
+.cms-table__empty { text-align: center; color: var(--admin-muted, #666); padding: 40px; }
+.cms-table th.cms-table__num,
+.cms-table td.cms-table__num { text-align: right; font-variant-numeric: tabular-nums; }
 </style>
