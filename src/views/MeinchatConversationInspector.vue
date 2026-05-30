@@ -82,12 +82,12 @@
                 class="meinchat-admin-conv__attach"
               >
                 <a
-                  :href="plainAttachment(msg).full"
+                  :href="plainAttachment(msg)?.full"
                   target="_blank"
                   rel="noopener"
                 >
                   <img
-                    :src="plainAttachment(msg).thumb || plainAttachment(msg).full"
+                    :src="plainAttachment(msg)?.thumb || plainAttachment(msg)?.full"
                     alt="attachment"
                   >
                 </a>
