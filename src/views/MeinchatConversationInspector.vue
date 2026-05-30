@@ -78,20 +78,24 @@
             </td>
             <td>
               <div
-                v-if="msg.attachment_url"
+                v-if="plainAttachment(msg)"
                 class="meinchat-admin-conv__attach"
               >
                 <a
-                  :href="msg.attachment_url"
+                  :href="plainAttachment(msg).full"
                   target="_blank"
                   rel="noopener"
                 >
                   <img
-                    :src="msg.attachment_thumb_url || msg.attachment_url"
+                    :src="plainAttachment(msg).thumb || plainAttachment(msg).full"
                     alt="attachment"
                   >
                 </a>
               </div>
+              <span
+                v-else-if="hasEncryptedAttachment(msg)"
+                class="badge"
+              >🔒 encrypted attachment</span>
               <pre class="meinchat-admin-conv__body">{{ msg.body }}</pre>
             </td>
           </tr>
@@ -112,7 +116,27 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { type AdminConversationInspection, inspectConversation } from '../api';
+import {
+  type AdminConversationInspection,
+  type AdminConversationInspectionMessage,
+  inspectConversation,
+} from '../api';
+
+// S28.4 — plain attachments are renderable; e2e_v1 blobs are opaque ciphertext
+// (the moderation inspector cannot — and must not — decrypt them).
+function plainAttachment(
+  msg: AdminConversationInspectionMessage,
+): { full: string; thumb: string | null } | null {
+  const atts = msg.attachments ?? [];
+  const full = atts.find((a) => a.kind === 'fullres' && a.protocol === 'plain');
+  if (!full) return null;
+  const thumb = atts.find((a) => a.kind === 'thumb' && a.protocol === 'plain');
+  return { full: full.storage_url, thumb: thumb ? thumb.storage_url : null };
+}
+
+function hasEncryptedAttachment(msg: AdminConversationInspectionMessage): boolean {
+  return (msg.attachments ?? []).some((a) => a.protocol !== 'plain');
+}
 
 const route = useRoute();
 const convId = ref('');

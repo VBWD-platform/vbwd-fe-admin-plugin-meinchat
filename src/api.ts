@@ -16,14 +16,27 @@ export interface AdminNicknameRow {
   banned_at: string | null;
 }
 
+// S28.4 — one stored attachment blob (fullres/thumb). `storage_url` is a
+// renderable image URL only for `plain` rows; `e2e_v1` blobs are opaque
+// ciphertext (not displayable in the moderation inspector).
+export interface AdminMessageAttachment {
+  id: string;
+  kind: 'fullres' | 'thumb';
+  storage_url: string;
+  protocol: string;
+  mime: string;
+  bytes_count: number;
+  width_px: number | null;
+  height_px: number | null;
+}
+
 export interface AdminConversationInspectionMessage {
   id: string;
   conversation_id: string;
   sender_id: string;
   sender_nickname: string;
   body: string;
-  attachment_url: string | null;
-  attachment_thumb_url: string | null;
+  attachments: AdminMessageAttachment[];
   sent_at: string | null;
   read_at: string | null;
   system_kind: string | null;
