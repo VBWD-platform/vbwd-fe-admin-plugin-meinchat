@@ -1,10 +1,12 @@
 /**
  * meinchat Admin Plugin
  *
- * Three moderation views in the admin backoffice:
+ * Moderation views in the admin backoffice:
  * - Nicknames table with ban/unban toggles
- * - Conversation inspector (open by ID, full read-only timeline)
  * - Token-transfer audit log
+ *
+ * NOTE: there is intentionally NO conversation-content inspector — admins must
+ * not read conversation content or history (privacy / product strategy).
  */
 import type { IPlugin, IPlatformSDK } from 'vbwd-view-component';
 import { extensionRegistry } from '../../vue/src/plugins/extensionRegistry';
@@ -28,11 +30,6 @@ const NAV_SECTIONS = [
         requiredPermission: 'meinchat.nicknames.moderate',
       },
       {
-        label: 'Conversations',
-        to: '/admin/meinchat/conversations',
-        requiredPermission: 'meinchat.conversations.inspect',
-      },
-      {
         label: 'Transfers',
         to: '/admin/meinchat/transfers',
         requiredPermission: 'meinchat.transfers.view',
@@ -44,7 +41,7 @@ const NAV_SECTIONS = [
 export const meinchatAdminPlugin: IPlugin = {
   name: 'meinchat-admin',
   version: '1.0.0',
-  description: 'Admin moderation: nickname ban/unban, conversation inspector, transfer audit log.',
+  description: 'Admin moderation: nickname ban/unban, transfer audit log.',
 
   install(sdk: IPlatformSDK) {
     sdk.addTranslations('en', { meinchatAdmin: (en as any).meinchatAdmin });
@@ -63,19 +60,6 @@ export const meinchatAdminPlugin: IPlugin = {
       name: 'meinchat-admin-nicknames',
       component: () => import('./src/views/MeinchatNicknamesList.vue'),
       meta: { requiredPermission: 'meinchat.nicknames.moderate' },
-    });
-    sdk.addRoute({
-      path: 'meinchat/conversations',
-      name: 'meinchat-admin-conversations',
-      component: () => import('./src/views/MeinchatConversationInspector.vue'),
-      meta: { requiredPermission: 'meinchat.conversations.inspect' },
-    });
-    sdk.addRoute({
-      path: 'meinchat/conversations/:id',
-      name: 'meinchat-admin-conversation-detail',
-      component: () => import('./src/views/MeinchatConversationInspector.vue'),
-      meta: { requiredPermission: 'meinchat.conversations.inspect' },
-      props: true,
     });
     sdk.addRoute({
       path: 'meinchat/transfers',

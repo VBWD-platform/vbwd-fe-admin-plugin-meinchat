@@ -16,47 +16,6 @@ export interface AdminNicknameRow {
   banned_at: string | null;
 }
 
-// S28.4 — one stored attachment blob (fullres/thumb). `storage_url` is a
-// renderable image URL only for `plain` rows; `e2e_v1` blobs are opaque
-// ciphertext (not displayable in the moderation inspector).
-export interface AdminMessageAttachment {
-  id: string;
-  kind: 'fullres' | 'thumb';
-  storage_url: string;
-  protocol: string;
-  mime: string;
-  bytes_count: number;
-  width_px: number | null;
-  height_px: number | null;
-}
-
-export interface AdminConversationInspectionMessage {
-  id: string;
-  conversation_id: string;
-  sender_id: string;
-  sender_nickname: string;
-  body: string;
-  attachments: AdminMessageAttachment[];
-  sent_at: string | null;
-  read_at: string | null;
-  system_kind: string | null;
-}
-
-export interface AdminConversationInspection {
-  conversation: {
-    id: string;
-    participant_low_id: string;
-    participant_high_id: string;
-    participant_low_nickname: string | null;
-    participant_high_nickname: string | null;
-    last_message_at: string | null;
-    last_message_preview: string | null;
-    unread_low_count: number;
-    unread_high_count: number;
-  };
-  messages: AdminConversationInspectionMessage[];
-}
-
 export interface AdminTransferRow {
   id: string;
   sender_user_id: string;
@@ -125,18 +84,6 @@ export async function unbanNickname(userId: string): Promise<AdminNicknameRow> {
     { method: 'POST', headers: authHeaders() },
   );
   return jsonOrThrow<AdminNicknameRow>(res);
-}
-
-// ── conversations ───────────────────────────────────────────────────────────
-
-export async function inspectConversation(
-  conversationId: string,
-): Promise<AdminConversationInspection> {
-  const res = await fetch(
-    `/api/v1/admin/meinchat/conversations/${conversationId}`,
-    { headers: authHeaders() },
-  );
-  return jsonOrThrow<AdminConversationInspection>(res);
 }
 
 // ── transfers ───────────────────────────────────────────────────────────────

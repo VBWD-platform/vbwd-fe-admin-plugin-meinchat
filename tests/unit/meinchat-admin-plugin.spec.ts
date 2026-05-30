@@ -16,15 +16,16 @@ describe('Meinchat Admin Plugin', () => {
     expect(meinchatAdminPlugin.version).toBe('1.0.0');
   });
 
-  it('registers all four moderation routes on install', async () => {
+  it('registers the moderation routes on install (no conversation inspector)', async () => {
     registry.register(meinchatAdminPlugin);
     await registry.installAll(sdk);
 
     const paths = sdk.getRoutes().map((r) => r.path);
     expect(paths).toContain('meinchat/nicknames');
-    expect(paths).toContain('meinchat/conversations');
-    expect(paths).toContain('meinchat/conversations/:id');
     expect(paths).toContain('meinchat/transfers');
+    // Privacy: admins must not read conversation content/history.
+    expect(paths).not.toContain('meinchat/conversations');
+    expect(paths).not.toContain('meinchat/conversations/:id');
   });
 
   it('every route requires its declared permission', async () => {
@@ -33,8 +34,6 @@ describe('Meinchat Admin Plugin', () => {
 
     const expected: Record<string, string> = {
       'meinchat/nicknames': 'meinchat.nicknames.moderate',
-      'meinchat/conversations': 'meinchat.conversations.inspect',
-      'meinchat/conversations/:id': 'meinchat.conversations.inspect',
       'meinchat/transfers': 'meinchat.transfers.view',
     };
     for (const route of sdk.getRoutes()) {

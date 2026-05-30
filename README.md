@@ -8,17 +8,18 @@ Mounted as children of the admin layout, so paths are relative:
 
 - `meinchat/nicknames` — paged table of every nickname (banned + active).
   Filter by substring; ban / unban buttons inline.
-- `meinchat/conversations` — load any conversation by UUID.
-- `meinchat/conversations/:id` — same, prefilled.
 - `meinchat/transfers` — paged audit log of every peer-to-peer token
   transfer with sender + recipient nicknames resolved.
+
+> **No conversation inspector.** Admins must not read conversation content or
+> history (privacy / product strategy); there is intentionally no per-message
+> admin view.
 
 ## Permissions
 
 | Route | Permission key |
 |---|---|
 | `meinchat/nicknames` | `meinchat.nicknames.moderate` |
-| `meinchat/conversations*` | `meinchat.conversations.inspect` |
 | `meinchat/transfers` | `meinchat.transfers.view` |
 
 The backend plugin (`vbwd-plugin-meinchat`) declares these in its
@@ -32,7 +33,6 @@ them.
 - `GET /admin/meinchat/nicknames`
 - `POST /admin/meinchat/nicknames/:id/ban`
 - `POST /admin/meinchat/nicknames/:id/unban`
-- `GET /admin/meinchat/conversations/:id`
 - `GET /admin/meinchat/transfers`
 
 ## Tests

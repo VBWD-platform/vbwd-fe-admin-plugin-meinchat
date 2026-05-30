@@ -5,8 +5,9 @@
  *   - a "Meinchat" nav section in the sidebar (registered via
  *     extensionRegistry.register('meinchat-admin', { navSections: [...] })
  *     in plugins/meinchat-admin/index.ts)
- *   - three top-level routes under /admin/meinchat/* — Nicknames,
- *     Conversations, Transfers — each rendering its own view
+ *   - top-level routes under /admin/meinchat/* — Nicknames, Transfers —
+ *     each rendering its own view. There is intentionally NO conversation
+ *     inspector (privacy: admins must not read conversation content).
  *
  * This test logs in as a real admin against the local backend and verifies
  * the plugin's assets are reachable. Run via:
@@ -61,13 +62,17 @@ test.describe('meinchat-admin — admin dashboard assets', () => {
     await expect(page.locator('text=/Page not found|404/i')).toHaveCount(0);
   });
 
-  test('Conversations inspector route resolves', async ({ page }) => {
+  test('Conversation inspector route is REMOVED (no admin content access)', async ({ page }) => {
     await page.goto('/admin/meinchat/conversations');
     await page.waitForLoadState('networkidle');
 
-    expect(page.url()).toContain('/admin/meinchat/conversations');
-    expect(page.url()).not.toContain('/login');
-    await expect(page.locator('text=/Page not found|404/i')).toHaveCount(0);
+    // The route was removed for privacy — it must NOT render an inspector.
+    // A removed route resolves to the app's not-found view (or redirects away).
+    const onInspector = page.url().includes('/admin/meinchat/conversations');
+    const notFound = await page
+      .locator('text=/Page not found|404|not found/i')
+      .count();
+    expect(onInspector && notFound === 0).toBe(false);
   });
 
   test('Transfers audit route resolves', async ({ page }) => {
@@ -101,19 +106,6 @@ test.describe('meinchat-admin — admin dashboard assets', () => {
     // Header padding matches the standard 12px 15px
     const headerPaddingTop = await th.evaluate((el) => getComputedStyle(el).paddingTop);
     expect(parseFloat(headerPaddingTop)).toBeGreaterThanOrEqual(10);
-  });
-
-  test('Conversation inspector renders messages inside a .cms-table', async ({ page }) => {
-    await page.goto('/admin/meinchat/conversations');
-    await page.waitForLoadState('networkidle');
-
-    // The empty-state inspector still renders the search bar; the table only
-    // appears once a conversation is loaded. Verify the page itself uses the
-    // standard cms-list__header so the title styling is consistent.
-    const header = page.locator('.cms-list__header h1');
-    await expect(header).toBeVisible({ timeout: 10000 });
-    const fontSize = await header.evaluate((el) => getComputedStyle(el).fontSize);
-    expect(parseFloat(fontSize)).toBeGreaterThanOrEqual(18);
   });
 
   test('Transfers page renders a styled .cms-table with right-aligned amount column', async ({ page }) => {
