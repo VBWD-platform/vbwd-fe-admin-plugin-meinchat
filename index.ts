@@ -55,6 +55,22 @@ export const meinchatAdminPlugin: IPlugin = {
 
     extensionRegistry.register('meinchat-admin', { navSections: NAV_SECTIONS });
 
+    // Register the MeinchatChatWidget editor through the SHARED cms-admin
+    // widget-editor seam (D9, OCP). Dynamic import keeps cms-admin a soft
+    // dependency — if cms-admin is absent the widget editor is simply not
+    // registered (the chat widget can still be authored elsewhere).
+    import('../cms-admin/index')
+      .then(({ registerWidgetEditor }) => {
+        import('./src/widgets/registerMeinchatChatWidgetEditor').then(
+          ({ registerMeinchatChatWidgetEditor }) => {
+            registerMeinchatChatWidgetEditor(registerWidgetEditor);
+          },
+        );
+      })
+      .catch(() => {
+        // cms-admin plugin not installed — skip widget-editor registration.
+      });
+
     sdk.addRoute({
       path: 'meinchat/nicknames',
       name: 'meinchat-admin-nicknames',

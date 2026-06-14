@@ -37,6 +37,29 @@
         "amount": "Amount",
         "note": "Note"
       }
+    },
+    "widget": {
+      "title": "Title",
+      "titlePlaceholder": "Chat",
+      "memberNicknames": "Member nicknames",
+      "memberNicknamesPlaceholder": "assistant, sales_bot",
+      "memberNicknamesHint": "Comma-separated nicknames invited to the room on Start Conversation; may be bots.",
+      "visibility": "Visibility",
+      "visibilityOption": {
+        "public": "Public",
+        "logged_in": "Logged in"
+      },
+      "welcomeMessage": "Welcome message",
+      "welcomeMessagePlaceholder": "Hello! How can we help you today?",
+      "composerPlaceholder": "Composer placeholder",
+      "composerPlaceholderPlaceholder": "Type a message…",
+      "startButtonLabel": "Start button label",
+      "display": "Display",
+      "displayOption": {
+        "inline": "Inline",
+        "dock": "Dock"
+      },
+      "openByDefault": "Open by default"
     }
   }
 }
