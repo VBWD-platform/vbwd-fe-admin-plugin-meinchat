@@ -26,6 +26,16 @@ jobs:
 
       - name: Overlay plugin source
         run: cp -r plugin-src/. vbwd-fe-admin/plugins/meinchat-admin/
+      # cross-imports peer plugin(s) that are gitignored in the host app; overlay from their repos.
+      - name: Checkout cms-admin peer
+        uses: actions/checkout@v4
+        with:
+          repository: VBWD-platform/vbwd-fe-admin-plugin-cms
+          path: peer-cms-admin
+      - name: Overlay peers
+        run: |
+          mkdir -p vbwd-fe-admin/plugins/cms-admin
+          cp -r peer-cms-admin/. vbwd-fe-admin/plugins/cms-admin/
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
