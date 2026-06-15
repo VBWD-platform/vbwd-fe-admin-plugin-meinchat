@@ -59,7 +59,14 @@
         "inline": "Inline",
         "dock": "Dock"
       },
-      "openByDefault": "Open by default"
+      "openByDefault": "Open by default",
+      "initialTokens": "Initial guest tokens",
+      "initialTokensHint": "Tokens granted to a guest when they start a chat.",
+      "costPerWord": "Token cost per word",
+      "costPerWordHint": "Tokens deducted per word a guest sends; when the balance runs out the Buy tokens button is shown.",
+      "buyTokensHref": "Buy tokens link",
+      "buyTokensHrefHint": "URL of the page with token bundles the out-of-tokens button links to.",
+      "buyTokensHrefPlaceholder": "/tokens"
     }
   }
 }

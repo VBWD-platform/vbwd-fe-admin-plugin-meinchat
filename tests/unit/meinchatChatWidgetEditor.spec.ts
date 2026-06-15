@@ -45,8 +45,19 @@ describe('MeinchatChatWidget editor descriptor', () => {
       start_button_label: 'Start Conversation',
       display: 'inline',
       open_by_default: false,
+      guest_initial_tokens: 20,
+      guest_token_cost_per_word: 1,
+      buy_tokens_href: '/tokens',
     });
     expect(Array.isArray(config.member_nicknames)).toBe(true);
+  });
+
+  it('defaultConfig() carries the token-economy keys with the right types', () => {
+    const descriptor = getWidgetEditor('MeinchatChatWidget')!;
+    const config = descriptor.defaultConfig();
+    expect(typeof config.guest_initial_tokens).toBe('number');
+    expect(typeof config.guest_token_cost_per_word).toBe('number');
+    expect(typeof config.buy_tokens_href).toBe('string');
   });
 
   it('cssHint targets the widget root class', () => {
@@ -137,6 +148,86 @@ describe('MeinchatChatWidget editor tab', () => {
     expect(emitted).toBeTruthy();
     const lastPayload = emitted![emitted!.length - 1][0] as Record<string, unknown>;
     expect(lastPayload.visibility).toBe('logged_in');
+  });
+
+  it('renders the token-economy inputs', () => {
+    const descriptor = getDescriptor();
+    const wrapper = mount(descriptor.generalTabComponent as Component, {
+      props: { config: descriptor.defaultConfig() },
+    });
+    expect(wrapper.find('[data-test="initial-tokens"]').exists()).toBe(true);
+    expect(wrapper.find('[data-test="cost-per-word"]').exists()).toBe(true);
+    expect(wrapper.find('[data-test="buy-tokens-href"]').exists()).toBe(true);
+  });
+
+  it('emits guest_initial_tokens as a number', async () => {
+    const descriptor = getDescriptor();
+    const wrapper = mount(descriptor.generalTabComponent as Component, {
+      props: { config: descriptor.defaultConfig() },
+    });
+    const initialTokensInput = wrapper.find('[data-test="initial-tokens"]');
+    expect(initialTokensInput.exists()).toBe(true);
+    await initialTokensInput.setValue('35');
+    const emitted = wrapper.emitted('update:config');
+    expect(emitted).toBeTruthy();
+    const lastPayload = emitted![emitted!.length - 1][0] as Record<string, unknown>;
+    expect(typeof lastPayload.guest_initial_tokens).toBe('number');
+    expect(lastPayload.guest_initial_tokens).toBe(35);
+  });
+
+  it('emits guest_token_cost_per_word as a number', async () => {
+    const descriptor = getDescriptor();
+    const wrapper = mount(descriptor.generalTabComponent as Component, {
+      props: { config: descriptor.defaultConfig() },
+    });
+    const costPerWordInput = wrapper.find('[data-test="cost-per-word"]');
+    expect(costPerWordInput.exists()).toBe(true);
+    await costPerWordInput.setValue('3');
+    const emitted = wrapper.emitted('update:config');
+    expect(emitted).toBeTruthy();
+    const lastPayload = emitted![emitted!.length - 1][0] as Record<string, unknown>;
+    expect(typeof lastPayload.guest_token_cost_per_word).toBe('number');
+    expect(lastPayload.guest_token_cost_per_word).toBe(3);
+  });
+
+  it('keeps the prior number on an unparseable token input (no emit)', async () => {
+    const descriptor = getDescriptor();
+    const wrapper = mount(descriptor.generalTabComponent as Component, {
+      props: { config: { ...descriptor.defaultConfig(), guest_initial_tokens: 20 } },
+    });
+    const initialTokensInput = wrapper.find('[data-test="initial-tokens"]');
+    await initialTokensInput.setValue('');
+    // An unparseable value is ignored: no update:config is emitted, so the
+    // caller's prior guest_initial_tokens stays untouched.
+    expect(wrapper.emitted('update:config')).toBeUndefined();
+  });
+
+  it('clamps a negative token input to zero', async () => {
+    const descriptor = getDescriptor();
+    const wrapper = mount(descriptor.generalTabComponent as Component, {
+      props: { config: descriptor.defaultConfig() },
+    });
+    const costPerWordInput = wrapper.find('[data-test="cost-per-word"]');
+    await costPerWordInput.setValue('-5');
+    const emitted = wrapper.emitted('update:config');
+    expect(emitted).toBeTruthy();
+    const lastPayload = emitted![emitted!.length - 1][0] as Record<string, unknown>;
+    expect(lastPayload.guest_token_cost_per_word).toBe(0);
+  });
+
+  it('emits buy_tokens_href as a string', async () => {
+    const descriptor = getDescriptor();
+    const wrapper = mount(descriptor.generalTabComponent as Component, {
+      props: { config: descriptor.defaultConfig() },
+    });
+    const buyTokensHrefInput = wrapper.find('[data-test="buy-tokens-href"]');
+    expect(buyTokensHrefInput.exists()).toBe(true);
+    await buyTokensHrefInput.setValue('/buy-tokens');
+    const emitted = wrapper.emitted('update:config');
+    expect(emitted).toBeTruthy();
+    const lastPayload = emitted![emitted!.length - 1][0] as Record<string, unknown>;
+    expect(typeof lastPayload.buy_tokens_href).toBe('string');
+    expect(lastPayload.buy_tokens_href).toBe('/buy-tokens');
   });
 });
 

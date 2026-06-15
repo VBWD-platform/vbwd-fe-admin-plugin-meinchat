@@ -104,6 +104,51 @@
       {{ t('meinchatAdmin.widget.openByDefault') }}
     </label>
   </div>
+
+  <div class="field-group">
+    <label class="field-label">{{ t('meinchatAdmin.widget.initialTokens') }}</label>
+    <input
+      data-test="initial-tokens"
+      :value="cfg.guest_initial_tokens"
+      class="field-input"
+      type="number"
+      min="0"
+      @input="setNumber('guest_initial_tokens', ($event.target as HTMLInputElement).value)"
+    >
+    <p class="field-hint">
+      {{ t('meinchatAdmin.widget.initialTokensHint') }}
+    </p>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">{{ t('meinchatAdmin.widget.costPerWord') }}</label>
+    <input
+      data-test="cost-per-word"
+      :value="cfg.guest_token_cost_per_word"
+      class="field-input"
+      type="number"
+      min="0"
+      @input="setNumber('guest_token_cost_per_word', ($event.target as HTMLInputElement).value)"
+    >
+    <p class="field-hint">
+      {{ t('meinchatAdmin.widget.costPerWordHint') }}
+    </p>
+  </div>
+
+  <div class="field-group">
+    <label class="field-label">{{ t('meinchatAdmin.widget.buyTokensHref') }}</label>
+    <input
+      data-test="buy-tokens-href"
+      :value="cfg.buy_tokens_href"
+      class="field-input"
+      type="text"
+      :placeholder="t('meinchatAdmin.widget.buyTokensHrefPlaceholder')"
+      @input="set('buy_tokens_href', ($event.target as HTMLInputElement).value)"
+    >
+    <p class="field-hint">
+      {{ t('meinchatAdmin.widget.buyTokensHrefHint') }}
+    </p>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -125,6 +170,14 @@ const memberNicknamesText = computed<string>(() => {
 
 function set(key: string, value: unknown) {
   emit('update:config', { ...props.config, [key]: value });
+}
+
+function setNumber(key: string, rawValue: string) {
+  const parsed = Number.parseInt(rawValue, 10);
+  if (Number.isNaN(parsed)) {
+    return;
+  }
+  set(key, Math.max(0, parsed));
 }
 
 function setMemberNicknames(rawText: string) {

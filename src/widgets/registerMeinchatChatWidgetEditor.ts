@@ -24,6 +24,9 @@ export function registerMeinchatChatWidgetEditor(
       start_button_label: DEFAULT_START_BUTTON_LABEL,
       display: 'inline',
       open_by_default: false,
+      guest_initial_tokens: 20,
+      guest_token_cost_per_word: 1,
+      buy_tokens_href: '/tokens',
     }),
 
     generalTabComponent: MeinchatChatWidgetEditorTab,
