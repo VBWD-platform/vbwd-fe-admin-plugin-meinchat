@@ -34,6 +34,11 @@ const NAV_SECTIONS = [
         to: '/admin/meinchat/transfers',
         requiredPermission: 'meinchat.transfers.view',
       },
+      {
+        label: 'Guests',
+        to: '/admin/meinchat/guests',
+        requiredPermission: 'meinchat.guests.manage',
+      },
     ],
   },
 ];
@@ -82,6 +87,12 @@ export const meinchatAdminPlugin: IPlugin = {
       name: 'meinchat-admin-transfers',
       component: () => import('./src/views/MeinchatTransfersList.vue'),
       meta: { requiredPermission: 'meinchat.transfers.view' },
+    });
+    sdk.addRoute({
+      path: 'meinchat/guests',
+      name: 'meinchat-admin-guests',
+      component: () => import('./src/views/MeinchatGuestsList.vue'),
+      meta: { requiredPermission: 'meinchat.guests.manage' },
     });
   },
 

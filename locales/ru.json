@@ -67,6 +67,28 @@
       "buyTokensHref": "Buy tokens link",
       "buyTokensHrefHint": "URL of the page with token bundles the out-of-tokens button links to.",
       "buyTokensHrefPlaceholder": "/tokens"
+    },
+    "guests": {
+      "title": "Guest tokens",
+      "search": "Filter by name or widget…",
+      "hint": "Top-up ADDS tokens to a guest balance; reset SETS the balance to exactly that amount. Leave the amount blank to use the configured initial-grant default.",
+      "bulkTitle": "Top up / reset ALL guests:",
+      "apply": "Apply",
+      "applyAll": "Apply to all",
+      "amountDefault": "default",
+      "affected": "{count} guests updated",
+      "empty": "No guests yet.",
+      "mode": {
+        "topup": "Top up (+N)",
+        "reset": "Reset (=N)"
+      },
+      "col": {
+        "displayName": "Display name",
+        "widget": "Widget",
+        "balance": "Balance",
+        "lastSeen": "Last seen",
+        "actions": "Tokens"
+      }
     }
   }
 }

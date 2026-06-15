@@ -23,6 +23,7 @@ describe('Meinchat Admin Plugin', () => {
     const paths = sdk.getRoutes().map((r) => r.path);
     expect(paths).toContain('meinchat/nicknames');
     expect(paths).toContain('meinchat/transfers');
+    expect(paths).toContain('meinchat/guests');
     // Privacy: admins must not read conversation content/history.
     expect(paths).not.toContain('meinchat/conversations');
     expect(paths).not.toContain('meinchat/conversations/:id');
@@ -35,6 +36,7 @@ describe('Meinchat Admin Plugin', () => {
     const expected: Record<string, string> = {
       'meinchat/nicknames': 'meinchat.nicknames.moderate',
       'meinchat/transfers': 'meinchat.transfers.view',
+      'meinchat/guests': 'meinchat.guests.manage',
     };
     for (const route of sdk.getRoutes()) {
       expect(route.meta?.requiredPermission).toBe(expected[route.path]);
