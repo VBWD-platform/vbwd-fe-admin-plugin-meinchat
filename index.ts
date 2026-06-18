@@ -8,6 +8,7 @@
  * NOTE: there is intentionally NO conversation-content inspector — admins must
  * not read conversation content or history (privacy / product strategy).
  */
+import { defineAsyncComponent } from 'vue';
 import type { IPlugin, IPlatformSDK } from 'vbwd-view-component';
 import { extensionRegistry } from '../../vue/src/plugins/extensionRegistry';
 import en from './locales/en.json';
@@ -43,6 +44,30 @@ const NAV_SECTIONS = [
   },
 ];
 
+// Session-cleanup blocks: a global block (Settings → User sessions) with the
+// bulk guest cleanup actions, and a per-user block (UserEdit → Reset user
+// sessions). Registered through the host's generic extension seam — no core
+// edit (OCP).
+const USER_SESSION_BLOCKS = [
+  {
+    id: 'meinchat-guest-sessions',
+    label: 'Guest economy',
+    order: 10,
+    requiredPermission: 'meinchat.guests.manage',
+    globalComponent: defineAsyncComponent(
+      () => import('./src/components/UserSessionsGlobalBlock.vue'),
+    ),
+    userComponent: defineAsyncComponent(
+      () => import('./src/components/UserSessionsUserBlock.vue'),
+    ),
+  },
+];
+
+const MEINCHAT_ADMIN_EXTENSION = {
+  navSections: NAV_SECTIONS,
+  userSessionBlocks: USER_SESSION_BLOCKS,
+};
+
 export const meinchatAdminPlugin: IPlugin = {
   name: 'meinchat-admin',
   version: '1.0.0',
@@ -58,7 +83,7 @@ export const meinchatAdminPlugin: IPlugin = {
     sdk.addTranslations('th', { meinchatAdmin: (th as any).meinchatAdmin });
     sdk.addTranslations('zh', { meinchatAdmin: (zh as any).meinchatAdmin });
 
-    extensionRegistry.register('meinchat-admin', { navSections: NAV_SECTIONS });
+    extensionRegistry.register('meinchat-admin', MEINCHAT_ADMIN_EXTENSION);
 
     // Register the MeinchatChatWidget editor through the SHARED cms-admin
     // widget-editor seam (D9, OCP). Dynamic import keeps cms-admin a soft
@@ -97,7 +122,7 @@ export const meinchatAdminPlugin: IPlugin = {
   },
 
   activate() {
-    extensionRegistry.register('meinchat-admin', { navSections: NAV_SECTIONS });
+    extensionRegistry.register('meinchat-admin', MEINCHAT_ADMIN_EXTENSION);
   },
 
   deactivate() {

@@ -53,6 +53,22 @@ export interface BulkGuestTokenResult {
   affected: number;
 }
 
+/** Counts returned by clearing every guest's chat + guest-session data. */
+export interface ClearGuestSessionsResult {
+  guests: number;
+  conversations: number;
+  rooms: number;
+  sessions: number;
+}
+
+/** Counts + new balance returned by clearing one user's sessions. */
+export interface ClearUserSessionsResult {
+  conversations: number;
+  rooms: number;
+  sessions: number;
+  balance: number;
+}
+
 export interface PagedResponse<T> {
   items: T[];
   page: number;
@@ -188,4 +204,26 @@ export async function setAllGuestTokens(
     },
   );
   return jsonOrThrow<BulkGuestTokenResult>(res);
+}
+
+// ── session cleanup ───────────────────────────────────────────────────────────
+
+/** Wipe EVERY guest's chat conversations, rooms and guest-session rows. */
+export async function clearAllGuestSessions(): Promise<ClearGuestSessionsResult> {
+  const res = await fetch(
+    '/api/v1/admin/meinchat/sessions/clear-guests',
+    { method: 'POST', headers: authHeaders() },
+  );
+  return jsonOrThrow<ClearGuestSessionsResult>(res);
+}
+
+/** Wipe ONE user's chat sessions and reset their token balance to the default. */
+export async function clearUserSessions(
+  userId: string,
+): Promise<ClearUserSessionsResult> {
+  const res = await fetch(
+    `/api/v1/admin/meinchat/users/${userId}/sessions/clear`,
+    { method: 'POST', headers: authHeaders() },
+  );
+  return jsonOrThrow<ClearUserSessionsResult>(res);
 }

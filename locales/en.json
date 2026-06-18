@@ -89,6 +89,20 @@
         "lastSeen": "Last seen",
         "actions": "Tokens"
       }
+    },
+    "sessions": {
+      "title": "Guest economy & sessions",
+      "description": "Wipe meinchat chat & guest session data. These actions are permanent and affect chat content, not login sessions.",
+      "clearAllGuests": "Clear all guest sessions & conversations",
+      "clearAllGuestsConfirm": "Delete EVERY guest’s chat conversations, rooms and guest sessions? This cannot be undone.",
+      "clearAllGuestsResult": "Cleared {guests} guests, {conversations} conversations, {rooms} rooms, {sessions} sessions.",
+      "resetAllTokens": "Reset all guest token balances",
+      "resetAllTokensConfirm": "Reset every widget guest’s token balance to the configured default allowance?",
+      "resetAllTokensResult": "{affected} guest balances reset.",
+      "clearUser": "Clear this user’s chat sessions & conversations",
+      "clearUserConfirm": "Delete this user’s meinchat conversations, rooms and guest sessions, and reset their token balance to the default?",
+      "clearUserResult": "Cleared {conversations} conversations, {rooms} rooms, {sessions} sessions. New balance: {balance}.",
+      "failed": "Action failed."
     }
   }
 }
