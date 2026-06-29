@@ -13,7 +13,7 @@ describe('Meinchat Admin Plugin', () => {
 
   it('declares correct metadata', () => {
     expect(meinchatAdminPlugin.name).toBe('meinchat-admin');
-    expect(meinchatAdminPlugin.version).toBe('1.0.0');
+    expect(meinchatAdminPlugin.version).toBe('26.6.1');
   });
 
   it('registers the moderation routes on install (no conversation inspector)', async () => {
