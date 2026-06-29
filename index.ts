@@ -70,7 +70,7 @@ const MEINCHAT_ADMIN_EXTENSION = {
 
 export const meinchatAdminPlugin: IPlugin = {
   name: 'meinchat-admin',
-  version: '1.0.0',
+  version: '26.6',
   dependencies: ['cms-admin'],
   description: 'Admin moderation: nickname ban/unban, transfer audit log.',
 
