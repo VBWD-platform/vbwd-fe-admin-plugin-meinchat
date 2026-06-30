@@ -155,6 +155,8 @@ describe('meinchat-admin plugin registers the guests action', () => {
     const mod = await import('../../index');
     registry = new PluginRegistry();
     sdk = new PlatformSDK();
+    // cms-admin is a declared dependency; register a no-op stub so the registry can resolve it.
+    registry.register({ name: 'cms-admin', version: '26.6.1', install() {} });
     registry.register(mod.default);
     await registry.installAll(sdk);
   });

@@ -235,6 +235,8 @@ describe('meinchat-admin install() wires the widget editor', () => {
   it('registers MeinchatChatWidget through the cms-admin seam on install', async () => {
     const registry = new PluginRegistry();
     const sdk = new PlatformSDK();
+    // cms-admin is a declared dependency; register a no-op stub so the registry can resolve it.
+    registry.register({ name: 'cms-admin', version: '26.6.1', install() {} });
     registry.register(meinchatAdminPlugin);
     await registry.installAll(sdk);
 
