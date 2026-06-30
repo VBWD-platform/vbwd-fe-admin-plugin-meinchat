@@ -28,16 +28,19 @@ const NAV_SECTIONS = [
       {
         label: 'Nicknames',
         to: '/admin/meinchat/nicknames',
+        icon: 'user',
         requiredPermission: 'meinchat.nicknames.moderate',
       },
       {
         label: 'Transfers',
         to: '/admin/meinchat/transfers',
+        icon: 'exchange',
         requiredPermission: 'meinchat.transfers.view',
       },
       {
         label: 'Guests',
         to: '/admin/meinchat/guests',
+        icon: 'users',
         requiredPermission: 'meinchat.guests.manage',
       },
     ],
